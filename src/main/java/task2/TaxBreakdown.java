@@ -1,4 +1,5 @@
 package task2;
 
-public record TaxBreakdown() {
-}
+import java.math.BigDecimal;
+
+public record TaxBreakdown(BigDecimal importDuty, BigDecimal exciseTax, BigDecimal vatRate) {}
