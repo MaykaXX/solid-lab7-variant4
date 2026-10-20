@@ -1,9 +1,9 @@
-import task1.*;
-import task2.*;
-import task3.*;
-import task4.LocalFileSyncProvider;
-import task4.ReadOnlyPublicCDNProvider;
-import task5.*;
+import task1_SRP.*;
+import task2_OCP.*;
+import task3_LSP.*;
+import task4_ISP.LocalFileSyncProvider;
+import task4_ISP.ReadOnlyPublicCDNProvider;
+import task5_DIP.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
