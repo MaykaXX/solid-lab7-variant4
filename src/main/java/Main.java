@@ -1,6 +1,9 @@
 import task1.*;
 import task2.*;
 import task3.*;
+import task4.LocalFileSyncProvider;
+import task4.ReadOnlyPublicCDNProvider;
+import task5.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -50,5 +53,41 @@ public class Main {
 
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
+
+        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 4 (ISP) --------");
+        ReadOnlyPublicCDNProvider cdn = new ReadOnlyPublicCDNProvider();
+        LocalFileSyncProvider local = new LocalFileSyncProvider();
+
+        System.out.println(cdn.generatePublicShareLink("document.pdf"));
+
+        local.uploadFile("document.pdf", new byte[]{1, 2, 3});
+        local.downloadFile("document.pdf");
+        local.deleteFile("document.pdf");
+        local.compressArchive("/documents");
+
+        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 5 (DIP) --------");
+        RecordStorage storage = new EncryptedLocalFileStorage();
+
+        MedicalRecordRepository database =
+                new OracleHealthDatabase();
+
+        MedicalEventPublisher publisher =
+                new HospitalEventBusPublisher();
+
+        PatientMedicalRecordService service =
+                new PatientMedicalRecordService(
+                        storage,
+                        database,
+                        publisher
+                );
+
+        MedicalRecord record = new MedicalRecord(
+                "MR001",
+                "P001",
+                "Грип",
+                "Пацієнту рекомендовано відпочинок."
+        );
+
+        service.savePatientRecord(record);
     }
 }
