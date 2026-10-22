@@ -54,8 +54,9 @@ public class Main {
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
-        System.out.println("=== TASK 4: ISP ===");
+        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 4 (ISP) --------");
 
+        // Створення CDN-сховища
         ReadOnlyPublicCDNProvider cdn =
                 new ReadOnlyPublicCDNProvider();
 
@@ -67,6 +68,7 @@ public class Main {
         String link = cdn.generatePublicShareLink("document.pdf");
         System.out.println("Public link: " + link);
 
+        // Створення локального сховища
         LocalFileSyncProvider localStorage =
                 new LocalFileSyncProvider();
 
@@ -78,24 +80,21 @@ public class Main {
         localStorage.compressArchive("backup.zip");
 
 
-        System.out.println("=== TASK 5: DIP ===");
+        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 5 (DIP) --------");
 
-        MedicalRecordRepository database =
-                new OracleHealthDatabase();
-
-        RecordStorage storage =
-                new EncryptedLocalFileStorage();
-
-        MedicalEventPublisher eventPublisher =
-                new HospitalEventBusPublisher();
+        // Створення залежностей через інтерфейси
+        MedicalRecordRepository database = new OracleHealthDatabase();
+        RecordStorage storage = new EncryptedLocalFileStorage();
+        MedicalEventPublisher eventPublisher = new HospitalEventBusPublisher();
 
         PatientMedicalRecordService service =
                 new PatientMedicalRecordService(
-                        (RecordStorage) database,
-                        (MedicalRecordRepository) storage,
+                        storage,
+                        database,
                         eventPublisher
                 );
 
+        // Створення медичного запису
         MedicalRecord record = new MedicalRecord(
                 "MR001",
                 "P001",
@@ -103,6 +102,8 @@ public class Main {
                 "Рекомендовано відпочинок та лікування"
         );
 
+        // Виконання операції збереження
+        service.savePatientRecord(record);
         service.savePatientRecord(record);
     }
 }
