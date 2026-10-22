@@ -73,15 +73,18 @@ public class Main {
 
         System.out.println("\n--- ReadOnlyPublicCDNProvider ---");
 
-        byte[] downloadedFile = cdn.downloadFile("document.pdf");
+        // Клієнт 1 бачить ТІЛЬКИ метод downloadFile і не має доступу до генерації посилань:
+        FileDownloader downloader = cdn;
+        byte[] downloadedFile = downloader.downloadFile("document.pdf");
         System.out.println("Downloaded bytes: " + downloadedFile.length);
 
-        String link = cdn.generatePublicShareLink("document.pdf");
+        // Клієнт 2 бачить ТІЛЬКИ метод генерації посилання:
+        PublicLinkGenerator linkGenerator = cdn;
+        String link = linkGenerator.generatePublicShareLink("document.pdf");
         System.out.println("Public link: " + link);
 
-        // Створення локального сховища
-        LocalFileSyncProvider localStorage =
-                new LocalFileSyncProvider();
+        // Локальне сховище демонструє підтримку робочих операцій без порожніх заглушок:
+        LocalFileSyncProvider localStorage = new LocalFileSyncProvider();
 
         System.out.println("\n--- LocalFileSyncProvider ---");
 
@@ -114,7 +117,6 @@ public class Main {
         );
 
         // Виконання операції збереження
-        service.savePatientRecord(record);
         service.savePatientRecord(record);
     }
 }
