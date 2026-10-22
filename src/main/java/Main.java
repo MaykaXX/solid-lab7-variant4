@@ -60,8 +60,13 @@ public class Main {
             System.out.println("Товар: " + item.getTitle() + " | Ціна: " + item.getUnitPrice() + " грн");
         }
 
+        // warehouseManager.processDefectiveReturn(winLicense, 1);
+        // ^ Цей рядок навіть не скомпілюється! Помилка відсікається типізацією на етапі збірки,
+        // а не винятком у рантаймі, як було до рефакторингу.
+
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
+
 
         System.out.println("=== TASK 4: ISP ===");
 
