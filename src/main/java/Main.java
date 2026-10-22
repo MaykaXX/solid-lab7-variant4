@@ -54,16 +54,29 @@ public class Main {
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
-        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 4 (ISP) --------");
-        ReadOnlyPublicCDNProvider cdn = new ReadOnlyPublicCDNProvider();
-        LocalFileSyncProvider local = new LocalFileSyncProvider();
+        System.out.println("=== TASK 4: ISP ===");
 
-        System.out.println(cdn.generatePublicShareLink("document.pdf"));
+        ReadOnlyPublicCDNProvider cdn =
+                new ReadOnlyPublicCDNProvider();
 
-        local.uploadFile("document.pdf", new byte[]{1, 2, 3});
-        local.downloadFile("document.pdf");
-        local.deleteFile("document.pdf");
-        local.compressArchive("/documents");
+        System.out.println("\n--- ReadOnlyPublicCDNProvider ---");
+
+        byte[] downloadedFile = cdn.downloadFile("document.pdf");
+        System.out.println("Downloaded bytes: " + downloadedFile.length);
+
+        String link = cdn.generatePublicShareLink("document.pdf");
+        System.out.println("Public link: " + link);
+
+        LocalFileSyncProvider localStorage =
+                new LocalFileSyncProvider();
+
+        System.out.println("\n--- LocalFileSyncProvider ---");
+
+        localStorage.uploadFile("report.txt", new byte[]{1, 2, 3});
+        localStorage.downloadFile("report.txt");
+        localStorage.deleteFile("old_report.txt");
+        localStorage.compressArchive("backup.zip");
+
 
         System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 5 (DIP) --------");
         RecordStorage storage = new EncryptedLocalFileStorage();
