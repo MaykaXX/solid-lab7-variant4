@@ -1,6 +1,7 @@
 package task1_SRP;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class BookingRequest {
@@ -22,6 +23,14 @@ public class BookingRequest {
         this.checkOutDate = checkOutDate;
         this.isLoyaltyMember = isLoyaltyMember;
         this.extraServices = extraServices;
+    }
+
+    // Додано після аудиту
+    public long getNights(){
+        if(checkInDate== null || checkOutDate==null){
+            return 0;
+        }
+        return ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
 
     public String getGuestName() { return guestName; }

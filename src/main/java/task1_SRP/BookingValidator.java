@@ -14,7 +14,7 @@ public class BookingValidator {
         }
 
         if (request.getCheckInDate().isBefore(LocalDate.now()) || !request.getCheckOutDate().isAfter(request.getCheckInDate())) {
-            throw new IllegalStateException("Некоректний період проживання.");
+            throw new IllegalArgumentException("Некоректний період проживання.");
         }
     }
 }

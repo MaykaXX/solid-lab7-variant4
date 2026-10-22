@@ -15,7 +15,12 @@ public class BookingLogRepository {
     }
 
     public void save(BookingRequest request, BigDecimal grandTotal) {
-        long nights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
+        //До перевірки
+        //long nights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
+        //Після
+        //ПІсля
+        long nights = request.getNights();
+
         String nowStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String dbEntry = String.format("%s|%s|%s|%dNights|%.2f%n",
                 nowStr, request.getGuestName(), request.getRoomType(), nights, grandTotal);

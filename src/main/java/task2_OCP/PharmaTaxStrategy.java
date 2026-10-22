@@ -7,8 +7,7 @@ public class PharmaTaxStrategy implements TaxStrategy {
     public TaxBreakdown calculateTaxes(ImportGoods goods) {
         BigDecimal importDuty = BigDecimal.ZERO;
         BigDecimal exciseTax = BigDecimal.ZERO;
-        BigDecimal vatRate = new BigDecimal("0.07");
-        return new TaxBreakdown(importDuty, exciseTax, vatRate);
+        return new TaxBreakdown(importDuty, exciseTax, TaxStrategy.REDUCED_VAT);
     }
 
     @Override

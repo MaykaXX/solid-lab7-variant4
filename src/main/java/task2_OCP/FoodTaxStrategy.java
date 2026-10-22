@@ -8,8 +8,7 @@ public class FoodTaxStrategy implements TaxStrategy {
         BigDecimal importDuty = goods.getDeclaredValue().multiply(new BigDecimal("0.10"))
                 .add(goods.getWeightKg().multiply(new BigDecimal("0.50")));
         BigDecimal exciseTax = BigDecimal.ZERO;
-        BigDecimal vatRate = new BigDecimal("0.07");
-        return new TaxBreakdown(importDuty, exciseTax, vatRate);
+        return new TaxBreakdown(importDuty, exciseTax, TaxStrategy.REDUCED_VAT);
     }
 
     @Override

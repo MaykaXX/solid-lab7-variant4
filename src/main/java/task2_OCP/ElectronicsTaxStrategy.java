@@ -7,8 +7,9 @@ public class ElectronicsTaxStrategy implements TaxStrategy {
     public TaxBreakdown calculateTaxes(ImportGoods goods) {
         BigDecimal importDuty = goods.getDeclaredValue().multiply(new BigDecimal("0.05"));
         BigDecimal exciseTax = BigDecimal.ZERO;
-        BigDecimal vatRate = new BigDecimal("0.20");
-        return new TaxBreakdown(importDuty, exciseTax, vatRate);
+        //ДО: BigDecimal vatRate = new BigDecimal("0.20");
+        //ПІСЛЯ
+        return new TaxBreakdown(importDuty, exciseTax, TaxStrategy.STANDARD_VAT);
     }
 
     @Override

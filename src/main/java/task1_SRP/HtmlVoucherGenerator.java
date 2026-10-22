@@ -9,7 +9,10 @@ public class HtmlVoucherGenerator {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public String generateHtml(BookingRequest request, BigDecimal grandTotal) {
-        long nights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
+        //ДО: long nights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
+        //Після
+        long nights = request.getNights();
+
         String extraServicesStr = (request.getExtraServices() != null && !request.getExtraServices().isEmpty())
                 ? String.join(", ", request.getExtraServices())
                 : "Немає";
