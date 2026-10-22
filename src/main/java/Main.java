@@ -78,27 +78,29 @@ public class Main {
         localStorage.compressArchive("backup.zip");
 
 
-        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 5 (DIP) --------");
-        RecordStorage storage = new EncryptedLocalFileStorage();
+        System.out.println("=== TASK 5: DIP ===");
 
         MedicalRecordRepository database =
                 new OracleHealthDatabase();
 
-        MedicalEventPublisher publisher =
+        RecordStorage storage =
+                new EncryptedLocalFileStorage();
+
+        MedicalEventPublisher eventPublisher =
                 new HospitalEventBusPublisher();
 
         PatientMedicalRecordService service =
                 new PatientMedicalRecordService(
-                        storage,
-                        database,
-                        publisher
+                        (RecordStorage) database,
+                        (MedicalRecordRepository) storage,
+                        eventPublisher
                 );
 
         MedicalRecord record = new MedicalRecord(
                 "MR001",
                 "P001",
                 "Грип",
-                "Пацієнту рекомендовано відпочинок."
+                "Рекомендовано відпочинок та лікування"
         );
 
         service.savePatientRecord(record);
