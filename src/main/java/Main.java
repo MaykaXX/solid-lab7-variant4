@@ -51,6 +51,15 @@ public class Main {
         mouse.restock(20);
         warehouseManager.processDefectiveReturn(mouse, 10);
 
+
+        System.out.println("Test LSP");
+        List<Item> cart = List.of(mouse, winLicense);
+
+        for (Item item : cart) {
+            // Контракт Item виконується без UnsupportedOperationException
+            System.out.println("Товар: " + item.getTitle() + " | Ціна: " + item.getUnitPrice() + " грн");
+        }
+
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
