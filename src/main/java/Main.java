@@ -1,7 +1,9 @@
 import task1_SRP.*;
 import task2_OCP.*;
 import task3_LSP.*;
+import task4_ISP.FileDownloader;
 import task4_ISP.LocalFileSyncProvider;
+import task4_ISP.PublicLinkGenerator;
 import task4_ISP.ReadOnlyPublicCDNProvider;
 import task5_DIP.*;
 
@@ -60,14 +62,10 @@ public class Main {
             System.out.println("Товар: " + item.getTitle() + " | Ціна: " + item.getUnitPrice() + " грн");
         }
 
-        // warehouseManager.processDefectiveReturn(winLicense, 1);
-        // ^ Цей рядок навіть не скомпілюється! Помилка відсікається типізацією на етапі збірки,
-        // а не винятком у рантаймі, як було до рефакторингу.
-
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
-        System.out.println("=== TASK 4: ISP ===");
+        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 4 (ISP) --------");
 
         // Створення CDN-сховища
         ReadOnlyPublicCDNProvider cdn =
@@ -81,6 +79,7 @@ public class Main {
         String link = cdn.generatePublicShareLink("document.pdf");
         System.out.println("Public link: " + link);
 
+        // Створення локального сховища
         LocalFileSyncProvider localStorage =
                 new LocalFileSyncProvider();
 
@@ -92,16 +91,12 @@ public class Main {
         localStorage.compressArchive("backup.zip");
 
 
-        System.out.println("=== TASK 5: DIP ===");
+        System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 5 (DIP) --------");
 
-        MedicalRecordRepository database =
-                new OracleHealthDatabase();
-
-        RecordStorage storage =
-                new EncryptedLocalFileStorage();
-
-        MedicalEventPublisher eventPublisher =
-                new HospitalEventBusPublisher();
+        // Створення залежностей через інтерфейси
+        MedicalRecordRepository database = new OracleHealthDatabase();
+        RecordStorage storage = new EncryptedLocalFileStorage();
+        MedicalEventPublisher eventPublisher = new HospitalEventBusPublisher();
 
         PatientMedicalRecordService service =
                 new PatientMedicalRecordService(
@@ -110,6 +105,7 @@ public class Main {
                         eventPublisher
                 );
 
+        // Створення медичного запису
         MedicalRecord record = new MedicalRecord(
                 "MR001",
                 "P001",
@@ -117,6 +113,8 @@ public class Main {
                 "Рекомендовано відпочинок та лікування"
         );
 
+        // Виконання операції збереження
+        service.savePatientRecord(record);
         service.savePatientRecord(record);
     }
 }
