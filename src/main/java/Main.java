@@ -67,9 +67,9 @@ public class Main {
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
-
         System.out.println("=== TASK 4: ISP ===");
 
+        // Створення CDN-сховища
         ReadOnlyPublicCDNProvider cdn =
                 new ReadOnlyPublicCDNProvider();
 
