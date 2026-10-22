@@ -1,7 +1,9 @@
 import task1_SRP.*;
 import task2_OCP.*;
 import task3_LSP.*;
+import task4_ISP.FileDownloader;
 import task4_ISP.LocalFileSyncProvider;
+import task4_ISP.PublicLinkGenerator;
 import task4_ISP.ReadOnlyPublicCDNProvider;
 import task5_DIP.*;
 
@@ -63,27 +65,36 @@ public class Main {
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
+
         System.out.println("\n-------- ТЕСТ ЗАВДАННЯ 4 (ISP) --------");
 
-        // Створення CDN-сховища
-        ReadOnlyPublicCDNProvider cdn =
+        // Клієнт 1: потребує лише скачування файлів
+        FileDownloader downloader = new ReadOnlyPublicCDNProvider();
+
+        byte[] downloadedFile = downloader.downloadFile("document.pdf");
+
+        System.out.println(
+                "Downloaded bytes: " + downloadedFile.length
+        );
+
+        // Клієнт 2: потребує лише публічних посилань
+        PublicLinkGenerator linkGenerator =
                 new ReadOnlyPublicCDNProvider();
 
-        System.out.println("\n--- ReadOnlyPublicCDNProvider ---");
+        System.out.println(
+                "Public link: "
+                        + linkGenerator.generatePublicShareLink("document.pdf")
+        );
 
-        byte[] downloadedFile = cdn.downloadFile("document.pdf");
-        System.out.println("Downloaded bytes: " + downloadedFile.length);
-
-        String link = cdn.generatePublicShareLink("document.pdf");
-        System.out.println("Public link: " + link);
-
-        // Створення локального сховища
+        // Локальне сховище реалізує потрібні йому інтерфейси
         LocalFileSyncProvider localStorage =
                 new LocalFileSyncProvider();
 
-        System.out.println("\n--- LocalFileSyncProvider ---");
+        localStorage.uploadFile(
+                "report.txt",
+                new byte[]{1, 2, 3}
+        );
 
-        localStorage.uploadFile("report.txt", new byte[]{1, 2, 3});
         localStorage.downloadFile("report.txt");
         localStorage.deleteFile("old_report.txt");
         localStorage.compressArchive("backup.zip");
