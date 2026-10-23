@@ -62,6 +62,9 @@ public class Main {
             System.out.println("Товар: " + item.getTitle() + " | Ціна: " + item.getUnitPrice() + " грн");
         }
 
+        // warehouseManager.processDefectiveReturn(winLicense, 1);
+        // ^ Цей рядок НЕ скомпілюється: захист спрацьовує на етапі збірки, а не падінням у рантаймі!
+
         // Цифровий товар існує як Item, але не може бути некоректно переданий у складський процес:
         System.out.println("Цифрова ліцензія створена: " + winLicense.getTitle() + " (" + winLicense.getLicenseKeyPattern() + ")");
 
@@ -118,5 +121,17 @@ public class Main {
 
         // Виконання операції збереження
         service.savePatientRecord(record);
+
+        // Демонстрація підміни реалізації (Mock / Test Repository для Unit-тестів):
+        System.out.println("\n--- Демонстрація підміни залежностей (DIP: Production vs Mock) ---");
+        MedicalRecordRepository mockDb = testRecord ->
+                System.out.println("[Mock DB / In-Memory] Тестовий запис " + testRecord.getRecordId() + " успішно збережено в RAM.");
+
+        PatientMedicalRecordService testService = new PatientMedicalRecordService(
+                storage,
+                mockDb,
+                eventPublisher
+        );
+        testService.savePatientRecord(new MedicalRecord("TEST-999", "P999", "Тестовий діагноз", "Тест без Oracle"));
     }
 }
